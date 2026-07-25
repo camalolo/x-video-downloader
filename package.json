@@ -1,0 +1,21 @@
+{
+  "name": "x-video-downloader",
+  "version": "1.0.0",
+  "description": "Chrome extension to download videos from X.com (Twitter) posts",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --config ../release/config/eslint.config.mjs .",
+    "pack": "node ../release/scripts/pack.mjs .",
+    "publish": "bash ../release/scripts/tag_release.sh ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.20.0",
+    "baseline-browser-mapping": "^1.0.0",
+    "eslint": "^9.20.0",
+    "eslint-plugin-security": "^3.0.0",
+    "eslint-plugin-unicorn": "^57.0.0",
+    "globals": "^16.0.0",
+    "web-ext": "^9.2.0",
+    "webext-buildtools-chrome-crx-builder": "^1.0.18"
+  }
+}

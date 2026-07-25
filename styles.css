@@ -1,0 +1,92 @@
+/* ==========================================================================
+   X Video Downloader - styles.css
+   Styles the download button to visually match X.com's action bar buttons.
+   ========================================================================== */
+
+.xdl-btn-wrap {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.xdl-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34.75px;
+  height: 34.75px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 9999px;
+  background: transparent;
+  color: rgb(113, 118, 123);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s ease;
+}
+
+/* Hover circle (mimics X.com's ripple) */
+.xdl-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: transparent;
+  transition: background-color 0.2s ease;
+  z-index: 0;
+}
+
+.xdl-btn:hover {
+  color: rgb(29, 155, 240);
+}
+
+.xdl-btn:hover::before {
+  background-color: rgba(29, 155, 240, 0.1);
+}
+
+/* Icon */
+.xdl-svg {
+  position: relative;
+  z-index: 1;
+  width: 18.75px;
+  height: 18.75px;
+  fill: currentColor;
+  pointer-events: none;
+}
+
+/* Spinner animation */
+.xdl-spin {
+  animation: xdl-rotate 0.7s linear infinite;
+}
+
+@keyframes xdl-rotate {
+  to { transform: rotate(360deg); }
+}
+
+/* Success state */
+.xdl-btn.xdl-ok {
+  color: rgb(0, 186, 124);
+}
+
+.xdl-btn.xdl-ok:hover {
+  color: rgb(0, 186, 124);
+}
+
+.xdl-btn.xdl-ok::before {
+  background-color: rgba(0, 186, 124, 0.1);
+}
+
+/* Error flash */
+.xdl-btn.xdl-error {
+  color: rgb(244, 33, 46);
+  animation: xdl-shake 0.4s ease;
+}
+
+@keyframes xdl-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
