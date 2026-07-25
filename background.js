@@ -4,13 +4,13 @@
    download via the chrome.downloads API.
    ========================================================================== */
 
-chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
-  if (msg.type !== 'XDL_DOWNLOAD') return;
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+  if (message.type !== 'XDL_DOWNLOAD') return;
 
   chrome.downloads.download(
     {
-      url: msg.url,
-      filename: sanitizeFilename(msg.filename),
+      url: message.url,
+      filename: sanitizeFilename(message.filename),
       saveAs: false,
     },
     function (downloadId) {
@@ -26,5 +26,5 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
 });
 
 function sanitizeFilename(name) {
-  return (name || 'video.mp4').replace(/[\\/:*?"<>|]/g, '_').substring(0, 200);
+  return (name || 'video.mp4').replaceAll(/[\\/:*?"<>|]/g, '_').slice(0, 200);
 }

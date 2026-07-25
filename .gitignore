@@ -3,3 +3,4 @@ dist/
 *.zip
 *.crx
 .DS_Store
+web-ext-artifacts/

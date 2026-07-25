@@ -6,8 +6,6 @@
    ========================================================================== */
 
 (function () {
-  'use strict';
-
   var VIDEO_ATTR = 'data-xdl-url';
   var CONTAINER_CLASS = 'xdl-btn-wrap';
   var ICON_DOWNLOAD =
@@ -30,9 +28,9 @@
     // Find where to insert: right before the share button (after bookmark)
     var children = Array.prototype.slice.call(bar.children);
     var insertBefore = null;
-    for (var i = 0; i < children.length; i++) {
-      if (children[i].querySelector('[data-testid="bookmark"]')) {
-        insertBefore = i + 1 < children.length ? children[i + 1] : null;
+    for (var index = 0; index < children.length; index++) {
+      if (children[index].querySelector('[data-testid="bookmark"]')) {
+        insertBefore = index + 1 < children.length ? children[index + 1] : null;
         break;
       }
     }
@@ -41,16 +39,16 @@
     var wrap = document.createElement('div');
     wrap.className = CONTAINER_CLASS;
 
-    var btn = document.createElement('button');
-    btn.className = 'xdl-btn';
-    btn.setAttribute('type', 'button');
-    btn.setAttribute('aria-label', 'Download video');
-    btn.setAttribute('role', 'button');
-    btn.innerHTML = ICON_DOWNLOAD;
-    btn.addEventListener('click', onDownload);
+    var button = document.createElement('button');
+    button.className = 'xdl-btn';
+    button.setAttribute('type', 'button');
+    button.setAttribute('aria-label', 'Download video');
+    button.setAttribute('role', 'button');
+    button.innerHTML = ICON_DOWNLOAD;
+    button.addEventListener('click', onDownload);
 
-    wrap.appendChild(btn);
-    bar.insertBefore(wrap, insertBefore);
+    wrap.append(button);
+    insertBefore.before(wrap);
   }
 
   function removeButton(article) {
@@ -60,14 +58,14 @@
 
   /* -- Download handler ------------------------------------------------- */
 
-  function onDownload(e) {
-    e.preventDefault();
-    e.stopPropagation();
+  function onDownload(event) {
+    event.preventDefault();
+    event.stopPropagation();
 
-    var btn = e.currentTarget;
-    if (btn.classList.contains('xdl-loading')) return;
+    var button = event.currentTarget;
+    if (button.classList.contains('xdl-loading')) return;
 
-    var article = btn.closest('article[data-testid="tweet"]');
+    var article = button.closest('article[data-testid="tweet"]');
     if (!article) return;
 
     var url = article.getAttribute(VIDEO_ATTR);
@@ -77,18 +75,18 @@
       window.postMessage({ type: 'XDL_RESCAN' }, '*');
       setTimeout(function () {
         var u = article.getAttribute(VIDEO_ATTR);
-        if (u) doDownload(btn, article, u);
-        else flash(btn, 'xdl-error');
+        if (u) doDownload(button, article, u);
+        else flash(button, 'xdl-error');
       }, 600);
       return;
     }
 
-    doDownload(btn, article, url);
+    doDownload(button, article, url);
   }
 
-  function doDownload(btn, article, url) {
-    btn.classList.add('xdl-loading');
-    btn.innerHTML = ICON_SPINNER;
+  function doDownload(button, article, url) {
+    button.classList.add('xdl-loading');
+    button.innerHTML = ICON_SPINNER;
 
     // Build a friendly filename
     var filename = 'x_video.mp4';
@@ -101,35 +99,34 @@
     chrome.runtime.sendMessage(
       { type: 'XDL_DOWNLOAD', url: url, filename: filename },
       function (resp) {
-        btn.classList.remove('xdl-loading');
+        button.classList.remove('xdl-loading');
         if (resp && resp.success) {
-          btn.innerHTML = ICON_CHECK;
-          btn.classList.add('xdl-ok');
-          setTimeout(resetButton, 2000, btn);
+          button.innerHTML = ICON_CHECK;
+          button.classList.add('xdl-ok');
+          setTimeout(resetButton, 2000, button);
         } else {
-          btn.innerHTML = ICON_DOWNLOAD;
-          flash(btn, 'xdl-error');
+          button.innerHTML = ICON_DOWNLOAD;
+          flash(button, 'xdl-error');
         }
       }
     );
   }
 
-  function resetButton(btn) {
-    btn.innerHTML = ICON_DOWNLOAD;
-    btn.classList.remove('xdl-ok');
+  function resetButton(button) {
+    button.innerHTML = ICON_DOWNLOAD;
+    button.classList.remove('xdl-ok');
   }
 
-  function flash(btn, cls) {
-    btn.classList.add(cls);
-    setTimeout(function () { btn.classList.remove(cls); }, 1200);
+  function flash(button, cls) {
+    button.classList.add(cls);
+    setTimeout(function () { button.classList.remove(cls); }, 1200);
   }
 
   /* -- Timeline scanning ------------------------------------------------ */
 
   function process() {
     var articles = document.querySelectorAll('article[data-testid="tweet"]');
-    for (var i = 0; i < articles.length; i++) {
-      var a = articles[i];
+    for (var a of articles) {
       if (a.hasAttribute(VIDEO_ATTR)) {
         createButton(a);
       } else {
