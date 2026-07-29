@@ -2,11 +2,19 @@
   "manifest_version": 3,
   "name": "X Video Downloader",
   "description": "Download videos from X.com (Twitter) posts with one click",
-  "version": "1.0.0",
-  "permissions": ["downloads"],
+  "version": "1.1.0",
+  "permissions": ["downloads", "storage"],
   "host_permissions": ["https://x.com/*", "https://video.twimg.com/*"],
   "background": {
     "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
   },
   "content_scripts": [
     {

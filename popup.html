@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="header">
+    <h1>Country Filter</h1>
+    <label class="switch">
+      <input type="checkbox" id="masterToggle">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div id="countryList" class="country-list">
+    <p class="empty">No countries discovered yet.<br>Browse X.com to populate.</p>
+  </div>
+
+  <div class="footer">
+    <button id="clearCache" class="btn-secondary">Clear cache</button>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

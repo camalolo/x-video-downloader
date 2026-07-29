@@ -90,3 +90,11 @@
   25% { transform: translateX(-3px); }
   75% { transform: translateX(3px); }
 }
+
+/* ==========================================================================
+   Country filter — hidden blocked articles
+   ========================================================================== */
+
+article.xdl-blocked {
+  display: none !important;
+}
